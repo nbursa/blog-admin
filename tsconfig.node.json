@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "skipLibCheck": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["tailwind.config.ts", "postcss.config.ts", "src/**/*.{ts, tsx}",],
+  "exclude": ["node_modules"],
+  "files": [
+    "postcss.config.ts"
+  ],
+}
