@@ -4,11 +4,12 @@ import React from 'react';
 import 'easymde/dist/easymde.min.css';
 import { MarkdownEditorProps } from '../types';
 import { CodeComponent } from 'react-markdown/lib/ast-to-react';
-import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
+import SyntaxHighlighter from 'react-syntax-highlighter';
 import { atomOneDark } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 
 export const CodeBlock: CodeComponent = ({ inline, className, children }) => {
   const match = /language-(\w+)/.exec(className || '');
+  console.log(match);
   return !inline && match ? (
     <SyntaxHighlighter style={atomOneDark} language={match[1]}>
       {String(children).replace(/\n$/, '')}

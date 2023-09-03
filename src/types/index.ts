@@ -4,8 +4,20 @@ import { Action } from '@reduxjs/toolkit';
 import React, { ReactNode } from 'react';
 
 export interface LoginFormValues {
+  name?: string;
   email: string;
   password: string;
+  confirmPassword?: string;
+}
+
+export interface User {
+  _id: string;
+  email: string;
+  password: string;
+  __v: number;
+  isAdmin?: boolean;
+  role?: string;
+  error?: string | null;
 }
 
 export interface CreatePostProps {}
@@ -118,8 +130,14 @@ export interface AuthProviderProps {
 export interface AuthContextProps {
   isAuthenticated: boolean;
   authError: string | null;
-  loginUser: (values: LoginFormValues) => void;
+  loggedUser: User | null;
+  registerUser: (values: LoginFormValues) => void;
+  loginUser: (values: {
+    email: string;
+    password: string;
+  }) => Promise<User | undefined>;
   logoutUser: () => void;
+  isAdmin?: boolean | undefined;
 }
 
 export interface MarkdownWithImageProps {

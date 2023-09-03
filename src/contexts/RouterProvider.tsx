@@ -5,15 +5,18 @@ import {
   Routes,
 } from 'react-router-dom';
 import { RouteConfig, RouterProviderProps } from '../types';
-import useAuth from '../hooks/useAuth';
+// import useAuth from '../hooks/useAuth.ts';
 import React, { startTransition, useState } from 'react';
-import AppLayout from '../components/AppLayout';
+import AppLayout from '../components/AppLayout.tsx';
 import Loader from '../components/Loader.tsx';
 
 const RouterProvider: React.FC<RouterProviderProps> = ({ children }) => {
-  const { isAuthenticated } = useAuth();
+  // const { isAuthenticated } = useAuth();
   // console.log('isAuthenticated: ', isAuthenticated);
   const [loading, setLoading] = useState(false);
+  const isAdmin =
+    localStorage.getItem('user') &&
+    JSON.parse(localStorage.getItem('user') as string).isAdmin;
 
   const handleEnter = () => {
     startTransition(() => {
@@ -46,7 +49,7 @@ const RouterProvider: React.FC<RouterProviderProps> = ({ children }) => {
                       <div className='fixed top-0 left-0 bottom-0 right-0 flex items-center justify-center bg-gray-dark text-5xl'>
                         <Loader />
                       </div>
-                    ) : route.protected && !isAuthenticated ? (
+                    ) : route.protected && !isAdmin ? (
                       <Navigate to='/login' replace />
                     ) : (
                       <route.component />

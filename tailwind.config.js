@@ -23,6 +23,7 @@ module.exports = {
       white: '#d3dce6',
       'calm-primary': 'rgba(96, 165, 250, 1)',
       'calm-secondary': 'rgba(90, 200, 180, 1)',
+      'calm-warning': 'rgba(255, 255, 153, 1)',
       'calm-accent': 'rgba(235, 87, 87, 1)',
     },
     fontFamily: {
@@ -35,8 +36,8 @@ module.exports = {
         gray: '0 10px 30px -30px rgba(255, 255, 255, 0)',
       },
       spacing: {
-        '128': '32rem',
-        '144': '36rem',
+        128: '32rem',
+        144: '36rem',
       },
       borderRadius: {
         '4xl': '2rem',

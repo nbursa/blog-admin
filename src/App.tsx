@@ -1,8 +1,8 @@
 import React from 'react';
 import routes from './router/config';
 import { AppProps } from './types';
-import { NotificationProvider } from './components/NotificationProvider';
-import RouterProvider from './router/RouterProvider';
+import { NotificationProvider } from './contexts/NotificationProvider.tsx';
+import RouterProvider from './contexts/RouterProvider.tsx';
 
 const App: React.FC<AppProps> = () => {
   return (

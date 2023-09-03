@@ -6,7 +6,7 @@ import { EditPostProps, BlogPost } from '../types';
 import type { AppDispatch } from '../store/store';
 import { useNavigate, useParams } from 'react-router-dom';
 import BlogForm from '../components/BlogForm.tsx';
-import { useNotification } from '../components/NotificationProvider.tsx';
+import { useNotification } from '../contexts/NotificationProvider.tsx';
 
 const EditPost: React.FC<EditPostProps> = () => {
   const dispatch = useDispatch<AppDispatch>();

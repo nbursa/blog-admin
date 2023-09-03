@@ -8,6 +8,11 @@ const CreatePost = lazy(() => import('../pages/CreatePost'));
 const EditPost = lazy(() => import('../pages/EditPost'));
 const SinglePost = lazy(() => import('../pages/SinglePost'));
 
+// const isAdmin =
+//   localStorage.getItem('user') &&
+//   JSON.parse(localStorage.getItem('user') as string).isAdmin;
+const isAuthenticated = !!localStorage.getItem('jwt');
+
 const routes: RouteConfig[] = [
   {
     path: '/',
@@ -16,13 +21,25 @@ const routes: RouteConfig[] = [
     hidden: false,
     protected: false,
   },
-  { path: '/login', component: Login, label: 'Login', hidden: false },
-  { path: '/post/:id', component: SinglePost, label: 'Post', hidden: true },
+  {
+    path: '/login',
+    component: Login,
+    label: 'Login',
+    hidden: isAuthenticated,
+    protected: false,
+  },
+  {
+    path: '/post/:id',
+    component: SinglePost,
+    label: 'Post',
+    hidden: true,
+    protected: false,
+  },
   {
     path: '/register',
     component: Register,
     label: 'Register',
-    hidden: true,
+    hidden: isAuthenticated,
   },
   {
     path: '/create',

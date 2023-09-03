@@ -5,7 +5,7 @@ import { AppDispatch } from '../store/store.ts';
 import { useNavigate } from 'react-router-dom';
 import BlogForm from '../components/BlogForm.tsx';
 import { createPostThunk } from '../store/blogActions.ts';
-import { useNotification } from '../components/NotificationProvider.tsx';
+import { useNotification } from '../contexts/NotificationProvider.tsx';
 
 const CreatePost: React.FC<CreatePostProps> = () => {
   const dispatch = useDispatch<AppDispatch>();

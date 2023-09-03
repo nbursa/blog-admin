@@ -7,12 +7,17 @@ const Navigation: React.FC<NavigationProps> = ({ routes, currentPath }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const navigationRef = useRef<HTMLDivElement>(null);
   const { isAuthenticated, logoutUser } = useAuth();
+  const isAdmin =
+    localStorage.getItem('user') &&
+    JSON.parse(localStorage.getItem('user') as string).isAdmin;
+
+  // console.log('isAuthenticated: ', isAuthenticated);
+  // console.log('isAdmin: ', isAdmin);
 
   const filteredRoutes = routes.filter(
     route =>
-      (isAuthenticated
-        ? route.protected && !route.hidden
-        : !route.protected && !route.hidden) && route.path !== currentPath
+      (isAdmin ? !route.hidden : !route.protected && !route.hidden) &&
+      route.path !== currentPath
   );
 
   const toggleDrawer = () => {

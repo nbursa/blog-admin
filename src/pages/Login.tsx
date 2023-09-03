@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const Login: React.FC = () => {
   const { loginUser, authError } = useAuth();
   const navigate = useNavigate();
+
   const initialValues: LoginFormValues = {
     email: '',
     password: '',
@@ -30,10 +31,10 @@ const Login: React.FC = () => {
     setSubmitting(true);
     try {
       await loginUser(values);
-      // console.log('login values ', values);
       setSubmitting(false);
       navigate('/');
     } catch (error) {
+      console.error('Login error:', error);
       setSubmitting(false);
     }
     setSubmitting(false);

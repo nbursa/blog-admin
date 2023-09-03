@@ -6,18 +6,37 @@ import { RootState } from '../store/store.ts';
 import { ThunkDispatch } from '@reduxjs/toolkit';
 import { AnyAction } from 'redux';
 import ReactMarkdown from 'react-markdown';
-import { BlogState } from '../types';
+// import { BlogState } from '../types';
 import { CodeBlock } from '../components/MarkdownEditor.tsx';
-import { useNotification } from '../components/NotificationProvider.tsx';
+import { useNotification } from '../contexts/NotificationProvider.tsx';
+import { UserState } from '../store/userSlice.ts';
+import { User } from '../types';
+
+type CompleteState = RootState & {
+  user: UserState;
+};
 
 const SinglePost: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const dispatch: ThunkDispatch<{ blog: BlogState }, BlogState, AnyAction> =
-    useDispatch();
+  // const dispatch: ThunkDispatch<{ blog: BlogState }, BlogState, AnyAction> =
+  useDispatch();
+  const dispatch = useDispatch<ThunkDispatch<CompleteState, any, AnyAction>>();
+
   const currentPost = useSelector((state: RootState) => state.blog.currentPost);
   const [deleteStatus, setDeleteStatus] = React.useState<string | null>(null);
   const notify = useNotification();
   const navigate = useNavigate();
+  // const isAuthenticated = useSelector((state: RootState) => state.user.isAdmin);
+  // const userState = useSelector((state: RootState) => state.user);
+  // const isAdmin = userState.user.isAdmin;
+  const userStorage = localStorage.getItem('user');
+  const user = userStorage && (JSON.parse(userStorage) as User);
+  const isAdmin = user && user?.isAdmin;
+  // if (userStorage !== null) {
+  //   console.log('user state: ', user);
+  // } else {
+  //   console.log('User data not found in local storage');
+  // }
 
   useEffect(() => {
     dispatch(fetchSinglePostThunk(id as string));
@@ -53,8 +72,22 @@ const SinglePost: React.FC = () => {
           Created At:{' '}
           {new Date(currentPost?.createdAt ?? new Date()).toLocaleString()}
         </small>
-        <a href={`/edit/${currentPost._id}`}>Edit Post</a>{' '}
-        <button onClick={handleDelete}>Delete Post</button>
+        {isAdmin && (
+          <>
+            <a
+              href={`/edit/${currentPost._id}`}
+              className='mr-2 p-2 border border-gray-light  rounded'
+            >
+              Edit Post
+            </a>
+            <button
+              onClick={handleDelete}
+              className='p-2 bg-calm-accent border border-calm-accent rounded'
+            >
+              Delete Post
+            </button>
+          </>
+        )}
         <small className='text-xs text-right'>
           Updated At:{' '}
           {new Date(currentPost?.updatedAt ?? new Date()).toLocaleString()}

@@ -1,4 +1,4 @@
-import { BlogState, NotificationState } from '../types';
+import { BlogState, NotificationState, User } from '../types';
 
 export const initialState: BlogState = {
   posts: [],
@@ -13,3 +13,5 @@ export const initialNotificationState: NotificationState = {
   message: '',
   duration: 3000,
 };
+
+export const initialUserState: User | null = null;
