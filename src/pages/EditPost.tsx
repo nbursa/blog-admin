@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchSinglePostThunk, updatePostThunk } from '../store/blogActions.ts';
-import { RootState } from '../store/store.ts';
+import { fetchSinglePostThunk, updatePostThunk } from '../store/blog/blogActions';
+import { RootState } from '../store/store';
 import { EditPostProps, BlogPost } from '../types';
 import type { AppDispatch } from '../store/store';
 import { useNavigate, useParams } from 'react-router-dom';
-import BlogForm from '../components/BlogForm.tsx';
-import { useNotification } from '../contexts/NotificationProvider.tsx';
+import BlogForm from '../components/BlogForm';
+import { useNotification } from '../contexts/NotificationProvider';
 
 const EditPost: React.FC<EditPostProps> = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -21,6 +21,7 @@ const EditPost: React.FC<EditPostProps> = () => {
 
   const initialValues: BlogPost = React.useMemo(
     () => ({
+      keywords: postToUpdate?.keywords || '',
       title: postToUpdate?.title || '',
       content: postToUpdate?.content || '',
     }),
@@ -48,6 +49,7 @@ const EditPost: React.FC<EditPostProps> = () => {
     try {
       await dispatch(updatePostThunk({ _id: postToUpdate?._id, ...values }));
       notify('success', 'Post updated successfully');
+      navigate(`/post/${postToUpdate?._id}`);
     } catch (error) {
       console.error('Failed to update the post', error);
       notify('failure', 'Failed to update the post');

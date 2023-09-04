@@ -2,6 +2,7 @@ import { ThunkAction } from 'redux-thunk';
 import { RootState } from '../store/store';
 import { Action } from '@reduxjs/toolkit';
 import React, { ReactNode } from 'react';
+import { UserState } from '../store/user/userSlice';
 
 export interface LoginFormValues {
   name?: string;
@@ -12,6 +13,7 @@ export interface LoginFormValues {
 
 export interface User {
   _id: string;
+  name?: string;
   email: string;
   password: string;
   __v: number;
@@ -25,6 +27,7 @@ export interface CreatePostProps {}
 export interface BlogPost {
   _id?: string;
   title: string;
+  keywords?: string;
   content: string;
   createdAt?: Date;
   updatedAt?: Date;
@@ -67,6 +70,7 @@ export interface NavigationProps {
 export interface AppLayoutProps {
   children: React.ReactNode;
   pathname?: string;
+  routes: RouteConfig[];
 }
 
 export interface BlogListProps {
@@ -163,4 +167,40 @@ export interface ProtectedRouteProps {
 
 export interface RouterProviderProps {
   children: RouteConfig[];
+}
+
+
+export type CompleteState = RootState & {
+  user: UserState;
+};
+
+export interface Reply {
+  id: string;
+  createdAt: Date;
+  userId: string;
+  reply: string;
+}
+
+export interface Comment {
+  id: string;
+  createdAt: Date;
+  postTitle: string;
+  userId: string;
+  comment: string;
+  replies?: Reply[];
+}
+
+export interface CommentFormProps {
+  onSubmit: (comment: string) => void;
+  type: 'reply' | 'comment';
+  closeForm: () => void;
+}
+
+export interface CommentComponentProps {
+  comment: Comment;
+  showReplyForm: boolean;
+  selectedCommentId: string | null;
+  toggleReplyForm: (comment: Comment) => void;
+  submitReplyForm: (reply: string) => void;
+  submitNestedReplyForm: (parentCommentId: string, reply: string) => void;
 }

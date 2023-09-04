@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchPostsThunk } from '../store/blogActions';
+import { fetchPostsThunk } from '../store/blog/blogActions';
 import { AnyAction } from 'redux';
 import { ThunkDispatch } from '@reduxjs/toolkit';
 import { RootState } from '../store/store';
@@ -66,14 +66,14 @@ const BlogList: React.FC<BlogListProps> = ({ onClick }) => {
         })}
       </small>
       <div
-        className='w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 lg:max-w-5xl mx-auto'
+        className='w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3 lg:max-w-4xl xl:max-w-7xl mx-auto'
         style={{ gridTemplateRows: 'masonry' }}
       >
         {sortedPosts.map(post => {
           return (
             <div
               key={post._id}
-              className='border border-gray-light rounded p-4 pb-2 cursor-pointer flex flex-col justify-between hover:shadow-md hover:shadow-white transition-shadow duration-300 hover:scale-[102%]'
+              className='h-auto border border-gray-light rounded p-4 pb-2 cursor-pointer flex flex-col justify-between hover:shadow-md hover:shadow-white transition-shadow duration-300 hover:scale-[102%]'
               onClick={e => handleClick(e, post._id as string)}
             >
               <div className='mb-4'>

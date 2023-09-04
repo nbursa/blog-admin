@@ -2,12 +2,10 @@ import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { LoginFormValues } from '../types';
 import useAuth from '../hooks/useAuth';
-// import { useNavigate } from 'react-router-dom';
 import { useNotification } from '../contexts/NotificationProvider';
 
 const Register: React.FC = () => {
   const { registerUser, authError } = useAuth();
-  // const navigate = useNavigate();
   const notify = useNotification();
 
   const initialValues: LoginFormValues = {
@@ -62,7 +60,7 @@ const Register: React.FC = () => {
           Register New User
         </h2>
         <Formik
-          className='w-full flex flex-col items-center justify-center'
+          // className='w-full flex flex-col items-center justify-center'
           initialValues={initialValues}
           validate={handleValidation}
           onSubmit={(values, { setSubmitting }) =>

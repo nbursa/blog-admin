@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BlogPost } from '../types';
-import { initialState } from '../constants';
+import { BlogPost } from '../../types';
+import { initialState } from '../../constants';
 
 const blogSlice = createSlice({
   name: 'blog',

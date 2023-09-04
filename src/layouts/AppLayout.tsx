@@ -1,11 +1,11 @@
 import { AppLayoutProps } from '../types';
 import React from 'react';
-import routes from '../router/config';
+// import routes from '../router/config';
 import Navigation from '../components/Navigation';
 import useLayoutHeight from '../hooks/useLayoutHeight';
 import { useLocation } from 'react-router-dom';
 
-const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
+const AppLayout: React.FC<AppLayoutProps> = ({ children, routes }) => {
   const [bodyHeight, navHeight] = useLayoutHeight();
   const { pathname } = useLocation();
 

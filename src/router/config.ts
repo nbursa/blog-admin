@@ -1,5 +1,5 @@
 import { RouteConfig } from '../types';
-import { lazy } from 'react';
+import {lazy} from 'react';
 
 const Home = lazy(() => import('../pages/Home'));
 const Login = lazy(() => import('../pages/Login'));
@@ -8,16 +8,16 @@ const CreatePost = lazy(() => import('../pages/CreatePost'));
 const EditPost = lazy(() => import('../pages/EditPost'));
 const SinglePost = lazy(() => import('../pages/SinglePost'));
 
-// const isAdmin =
-//   localStorage.getItem('user') &&
-//   JSON.parse(localStorage.getItem('user') as string).isAdmin;
-const isAuthenticated = !!localStorage.getItem('jwt');
+const isAuthenticated = !!localStorage.getItem('blog_access_token');
+const isAdmin =
+  localStorage.getItem('blog_user') &&
+  JSON.parse(localStorage.getItem('blog_user') as string).isAdmin;
 
 const routes: RouteConfig[] = [
   {
     path: '/',
     component: Home,
-    label: 'Blog',
+    label: 'Blogs',
     hidden: false,
     protected: false,
   },
@@ -40,18 +40,19 @@ const routes: RouteConfig[] = [
     component: Register,
     label: 'Register',
     hidden: isAuthenticated,
+    protected: false,
   },
   {
     path: '/create',
     component: CreatePost,
     label: 'New Post',
     protected: true,
-    hidden: false,
+    hidden: !isAuthenticated || !isAdmin,
   },
   {
     path: '/edit/:id',
     component: EditPost,
-    label: 'Edit Post',
+    label: 'Find & Edit',
     protected: true,
     hidden: true,
   },

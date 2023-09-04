@@ -47,7 +47,7 @@ const Login: React.FC = () => {
           Login Page
         </h2>
         <Formik
-          className='w-full flex flex-col items-center justify-center'
+          // className='w-full flex flex-col items-center justify-center'
           initialValues={initialValues}
           validate={handleValidation}
           onSubmit={(values, { setSubmitting }) =>

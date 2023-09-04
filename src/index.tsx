@@ -4,7 +4,7 @@ import { Provider as ReduxProvider } from 'react-redux';
 import store from './store/store';
 import App from './App';
 import ErrorBoundary from './components/ErrorBoundary';
-import { NotificationProvider } from './contexts/NotificationProvider.tsx';
+import { NotificationProvider } from './contexts/NotificationProvider';
 import { AuthProvider } from './contexts/AuthProvider';
 import Loader from './components/Loader';
 import './index.css';

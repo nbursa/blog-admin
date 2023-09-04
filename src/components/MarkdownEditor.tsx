@@ -9,7 +9,6 @@ import { atomOneDark } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 
 export const CodeBlock: CodeComponent = ({ inline, className, children }) => {
   const match = /language-(\w+)/.exec(className || '');
-  console.log(match);
   return !inline && match ? (
     <SyntaxHighlighter style={atomOneDark} language={match[1]}>
       {String(children).replace(/\n$/, '')}

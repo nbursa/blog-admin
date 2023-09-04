@@ -1,19 +1,20 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import { useDispatch } from 'react-redux';
 import { BlogPost, CreatePostProps } from '../types';
-import { AppDispatch } from '../store/store.ts';
+import { AppDispatch } from '../store/store';
 import { useNavigate } from 'react-router-dom';
-import BlogForm from '../components/BlogForm.tsx';
-import { createPostThunk } from '../store/blogActions.ts';
-import { useNotification } from '../contexts/NotificationProvider.tsx';
+import BlogForm from '../components/BlogForm';
+import { createPostThunk } from '../store/blog/blogActions';
+import { useNotification } from '../contexts/NotificationProvider';
 
 const CreatePost: React.FC<CreatePostProps> = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const notify = useNotification();
 
-  const initialValues: BlogPost = React.useMemo(
+  const initialValues: BlogPost = useMemo(
     () => ({
+      keywords: '',
       title: '',
       content: '',
     }),
@@ -25,6 +26,7 @@ const CreatePost: React.FC<CreatePostProps> = () => {
     try {
       await dispatch(createPostThunk(values));
       notify('success', 'Post created successfully');
+      navigate('/');
     } catch (error) {
       console.error('Failed to update the post', error);
       notify('failure', 'Failed to create the post');

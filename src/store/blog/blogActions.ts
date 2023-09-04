@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { setPosts, setError, setLoading, setSinglePost } from './blogSlice';
-import { AppThunk, BlogPost } from '../types';
+import { AppThunk, BlogPost } from '../../types';
 
 const BLOG_API = `${process.env.REACT_APP_ENDPOINT}/blog` as string;
 

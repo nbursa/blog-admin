@@ -101,45 +101,45 @@ span.CodeMirror-selectedtext {
 .markdown h2 {
   margin-left: auto;
   margin-right: auto;
-  font-size: 2.1rem;
+  font-size: 1.7rem;
   font-weight: 700;
   margin-bottom: 1rem;
   font-family: Poppins, system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
 .markdown h3 {
-  font-size: 1.8rem;
-  font-weight: 700;
+  font-size: 1.2rem;
+  font-weight: 500;
   margin-bottom: 1rem;
   font-family: Poppins, system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
 .markdown h4 {
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: 1rem;
+  font-weight: 300;
   margin-bottom: 1rem;
   font-family: Poppins, system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
 .markdown h5 {
-  font-size: 1.2rem;
-  font-weight: 700;
+  font-size: 1rem;
+  font-weight: 300;
   margin-bottom: 1rem;
   font-family: Poppins, system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
 .markdown h6 {
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: 300;
   margin-bottom: 1rem;
   font-family: Poppins, system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
 .markdown p {
   font-size: 1rem;
-  /*font-weight: 700;*/
+  font-weight: 300;
   margin-bottom: 1.5rem;
-  /*font-family: Poppins, system-ui, Avenir, Helvetica, Arial, sans-serif;*/
+  font-family: Poppins, system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
 .markdown img {
@@ -178,7 +178,16 @@ pre pre {
   color: unset;
 }
 
-@media (max-width: 448px) {
+@media (max-width: 600px) {
+  .markdown h1 {
+    font-size: 2.5rem;
+  }
+  .markdown h2 {
+    font-size: 2rem;
+  }
+  .markdown h3 {
+    font-size: 1.2rem;
+  }
   .markdown img {
     float: none;
     margin-left: auto;

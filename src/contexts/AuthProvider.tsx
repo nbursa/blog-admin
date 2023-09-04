@@ -1,8 +1,8 @@
 import React, { createContext, useEffect, useState } from 'react';
 import { AuthContextProps, AuthProviderProps, User } from '../types';
 import { useDispatch } from 'react-redux';
-import { clearUser } from '../store/userSlice.ts';
-import { authAction } from '../store/userActions.ts';
+import { clearUser } from '../store/user/userSlice';
+import { authAction } from '../store/user/userActions';
 
 const AuthContext = createContext<AuthContextProps>({
   isAuthenticated: false,
@@ -24,10 +24,10 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [loggedUser, setLocalUser] = useState<User | null>(null);
 
   useEffect(() => {
-    const token = localStorage.getItem('jwt');
+    const token = localStorage.getItem('blog_access_token');
     if (token) {
       setIsAuthenticated(true);
-      const storedUser = localStorage.getItem('user');
+      const storedUser = localStorage.getItem('blog_user');
 
       if (storedUser) {
         const parsedUser = JSON.parse(storedUser);
@@ -67,8 +67,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const logoutUser = () => {
-    localStorage.removeItem('jwt');
-    localStorage.removeItem('user');
+    localStorage.removeItem('blog_access_token');
+    localStorage.removeItem('blog_user');
     setIsAuthenticated(false);
     dispatch(clearUser());
   };

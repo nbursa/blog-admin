@@ -1,5 +1,5 @@
 import React, { createContext, ReactNode, useContext, useState } from 'react';
-import Notification from '../components/Notification.tsx';
+import Notification from '../components/Notification';
 import { NotificationContextType, NotificationState } from '../types';
 import { initialNotificationState } from '../constants';
 

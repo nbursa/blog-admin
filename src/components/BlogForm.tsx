@@ -1,8 +1,8 @@
 import React from 'react';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { FormikFormProps } from '../types';
-import { handleValidation } from '../helpers/form.ts';
-import MarkdownEditor from './MarkdownEditor.tsx';
+import { handleValidation } from '../helpers/form';
+import MarkdownEditor from './MarkdownEditor';
 
 const BlogForm: React.FC<FormikFormProps> = ({
   initialValues,
@@ -12,7 +12,6 @@ const BlogForm: React.FC<FormikFormProps> = ({
 }) => {
   return (
     <Formik
-      className='w-full flex flex-col items-center justify-center'
       initialValues={initialValues}
       onSubmit={(values, { setSubmitting }) => {
         onSubmit(values);
@@ -30,8 +29,31 @@ const BlogForm: React.FC<FormikFormProps> = ({
         isSubmitting,
       }) => (
         <Form onSubmit={handleSubmit} className='w-full flex flex-col'>
+          <label htmlFor='keywords' className='mb-1'>
+            Keywords(Optional):
+          </label>
+          <Field
+            id='keywords'
+            type='text'
+            name='keywords'
+            className={`w-full border border-gray-light bg-black-lighter text-white p-2 rounded ${
+              errors.keywords && touched.keywords ? 'mb-1' : 'mb-8'
+            } focus:outline-none focus:border-calm-primary`}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            placeholder='Enter keywords comma separated'
+            value={values.keywords}
+          />
+          {errors.keywords && touched.keywords && (
+            <ErrorMessage
+              name='keywords'
+              component='div'
+              className='mb-2 text-sm text-calm-accent'
+            />
+          )}
+
           <label htmlFor='title' className='mb-1'>
-            Keywords:
+            Title:
           </label>
           <Field
             id='title'

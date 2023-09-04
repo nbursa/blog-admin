@@ -33,7 +33,7 @@ module.exports = {
     extend: {
       boxShadow: {
         white: '0 10px 30px -30px rgba(255, 255, 255, 0.2)',
-        gray: '0 10px 30px -30px rgba(255, 255, 255, 0)',
+        gray: '0 10px 30px -30px rgba(20, 29, 37, 1)',
       },
       spacing: {
         128: '32rem',

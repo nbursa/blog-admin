@@ -5,18 +5,15 @@ import {
   Routes,
 } from 'react-router-dom';
 import { RouteConfig, RouterProviderProps } from '../types';
-// import useAuth from '../hooks/useAuth.ts';
 import React, { startTransition, useState } from 'react';
-import AppLayout from '../components/AppLayout.tsx';
-import Loader from '../components/Loader.tsx';
+import AppLayout from '../layouts/AppLayout';
+import Loader from '../components/Loader';
+import useAuth from "../hooks/useAuth";
+import ScrollToTop from '../components/ScrollToTop';
 
 const RouterProvider: React.FC<RouterProviderProps> = ({ children }) => {
-  // const { isAuthenticated } = useAuth();
-  // console.log('isAuthenticated: ', isAuthenticated);
   const [loading, setLoading] = useState(false);
-  const isAdmin =
-    localStorage.getItem('user') &&
-    JSON.parse(localStorage.getItem('user') as string).isAdmin;
+  const { isAdmin } = useAuth();
 
   const handleEnter = () => {
     startTransition(() => {
@@ -30,11 +27,16 @@ const RouterProvider: React.FC<RouterProviderProps> = ({ children }) => {
     });
   };
 
+  const filteredRoutes = children.filter((route: RouteConfig) => {
+    return !(route.protected && !isAdmin);
+  });
+
   return (
     <ReactRouter>
-      <AppLayout>
+      <ScrollToTop />
+      <AppLayout routes={filteredRoutes}>
         <Routes>
-          {children.map((route: RouteConfig, index: number) => {
+          {filteredRoutes.map((route: RouteConfig, index: number) => {
             return (
               <Route
                 key={index}

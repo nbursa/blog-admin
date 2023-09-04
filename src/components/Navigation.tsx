@@ -1,24 +1,46 @@
-import React, { useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import { NavigationProps } from '../types';
 import useAuth from '../hooks/useAuth';
-import useLayoutHeight from '../hooks/useLayoutHeight.ts';
+import useLayoutHeight from '../hooks/useLayoutHeight';
 
 const Navigation: React.FC<NavigationProps> = ({ routes, currentPath }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const navigationRef = useRef<HTMLDivElement>(null);
   const { isAuthenticated, logoutUser } = useAuth();
-  const isAdmin =
-    localStorage.getItem('user') &&
-    JSON.parse(localStorage.getItem('user') as string).isAdmin;
+  // const isAdmin =
+  //   localStorage.getItem('user') &&
+  //   JSON.parse(localStorage.getItem('user') as string).isAdmin;
 
-  // console.log('isAuthenticated: ', isAuthenticated);
-  // console.log('isAdmin: ', isAdmin);
+  const [isAdmin, setIsAdmin] = useState<boolean>(
+    () =>
+      localStorage.getItem('blog_user') &&
+      JSON.parse(localStorage.getItem('blog_user') as string).isAdmin
+  );
+
+  useEffect(() => {
+    const adminStatus =
+      localStorage.getItem('blog_user') &&
+      JSON.parse(localStorage.getItem('blog_user') as string).isAdmin;
+    setIsAdmin(adminStatus);
+  }, [isAuthenticated]);
 
   const filteredRoutes = routes.filter(
     route =>
       (isAdmin ? !route.hidden : !route.protected && !route.hidden) &&
       route.path !== currentPath
   );
+  // const filteredRoutes = routes.filter(route => {
+  //   if (!isAuthenticated && (route.label === 'Login' || route.label === 'Register')) {
+  //     return false;
+  //   }
+  //
+  //   if (isAdmin) {
+  //     return route.hidden;
+  //   }
+  //
+  //   return !route.protected && !route.hidden && route.path !== currentPath;
+  // });
+
 
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);

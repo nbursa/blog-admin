@@ -10,11 +10,8 @@ const Home: React.FC<HomeProps> = () => {
     navigate(`/post/${id}`);
   };
 
-  return (
-    <div className=''>
-      <BlogList onClick={(id: string) => handleClick(id)} />
-    </div>
-  );
+  return <BlogList onClick={(id: string) => handleClick(id)} />
+
 };
 
 export default Home;
