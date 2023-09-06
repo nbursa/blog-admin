@@ -170,37 +170,43 @@ export interface RouterProviderProps {
 }
 
 
+// RootState presumably imported from somewhere
 export type CompleteState = RootState & {
   user: UserState;
 };
 
 export interface Reply {
-  id: string;
-  createdAt: Date;
+  _id?: string;
+  createdAt: string;
+  updatedAt: string;
+  userName: string;
   userId: string;
   reply: string;
+  commentId?: string;
 }
 
 export interface Comment {
-  id: string;
-  createdAt: Date;
-  postTitle: string;
+  _id?: string;
+  createdAt: string;
+  updatedAt: string;
+  postId: string;
+  userName: string;
   userId: string;
   comment: string;
-  replies?: Reply[];
+  replies: Reply[];
 }
 
-export interface CommentFormProps {
+export interface FormProps {
   onSubmit: (comment: string) => void;
   type: 'reply' | 'comment';
   closeForm: () => void;
 }
 
-export interface CommentComponentProps {
+export interface CommentProps {
   comment: Comment;
   showReplyForm: boolean;
-  selectedCommentId: string | null;
+  selectedCommentId: string | undefined;
   toggleReplyForm: (comment: Comment) => void;
-  submitReplyForm: (reply: string) => void;
-  submitNestedReplyForm: (parentCommentId: string, reply: string) => void;
+  submitReplyForm: (commentId: string, reply: string) => void;
+  // submitNestedReplyForm: (parentCommentId: string, reply: string) => void;
 }

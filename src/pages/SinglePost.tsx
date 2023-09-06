@@ -11,9 +11,10 @@ import { AnyAction } from 'redux';
 import ReactMarkdown from 'react-markdown';
 import { CodeBlock } from '../components/MarkdownEditor';
 import { useNotification } from '../contexts/NotificationProvider';
-import { CompleteState, Reply, User, Comment } from '../types';
+import { CompleteState, User } from '../types';
 import CommentComponent from '../components/Comment';
 import CommentForm from '../components/CommentForm';
+import { useComments } from '../hooks/useComments';
 
 const SinglePost: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -27,15 +28,17 @@ const SinglePost: React.FC = () => {
   const isAdmin = user && user?.isAdmin;
   const [showModal, setShowModal] = useState(false);
   const [showCommentForm, setShowCommentForm] = useState(false);
-  const [showReplyForm, setShowReplyForm] = useState(false);
-  const [comments, setComments] = useState<Comment[]>([]);
-  const [selectedComment, setSelectedComment] = useState<Comment | null>(
-    null
-  );
+
+  const {
+    comments,
+    submitComment,
+    submitReply,
+    // selectedComment,
+    showReplyForm,
+    toggleReplyForm,
+  } = useComments({ postId: id as string });
 
   const authenticatedUser = localStorage.getItem('blog_user');
-  const parsedUser = authenticatedUser && JSON.parse(authenticatedUser);
-  const userId = parsedUser ? parsedUser._id : null;
 
   useEffect(() => {
     dispatch(fetchSinglePostThunk(id as string));
@@ -52,74 +55,6 @@ const SinglePost: React.FC = () => {
 
   const toggleCommentForm = () => {
     setShowCommentForm((prevState) => !prevState);
-  };
-
-  const toggleReplyForm = (comment: Comment) => {
-    if (comment) {
-      setSelectedComment(comment);
-    } else {
-      setSelectedComment(null);
-    }
-    setShowReplyForm((prevState) => !prevState);
-  };
-
-  const submitReplyForm = (reply: string) => {
-    if (authenticatedUser && currentPost._id && selectedComment) {
-      const newReply: Reply = {
-        id: `${(selectedComment.replies?.length || 0) + 1}`,
-        createdAt: new Date(),
-        userId,
-        reply
-      };
-
-      const updatedComments = comments.map((comment) => {
-        if (comment.id === selectedComment.id) {
-          return {
-            ...comment,
-            replies: [...(comment.replies || []), newReply]
-          };
-        }
-        return comment;
-      });
-
-      setComments(updatedComments);
-      setShowReplyForm(false);
-    }
-  };
-
-  const submitNestedReplyForm = (parentCommentId: string, reply: string) => {
-    const updatedComments = comments.map((comment) => {
-      if (comment.id === parentCommentId) {
-        const newNestedReply: Reply = {
-          id: `${(comment.replies?.length || 0) + 1}`,
-          createdAt: new Date(),
-          userId,
-          reply
-        };
-        return {
-          ...comment,
-          replies: [...(comment.replies || []), newNestedReply]
-        };
-      }
-      return comment;
-    });
-
-    setComments(updatedComments);
-  };
-
-  const submitCommentForm = (comment: string) => {
-    if (authenticatedUser && currentPost._id) {
-      const newComment: Comment = {
-        id: `${comments.length + 1 || 1}`,
-        createdAt: new Date(),
-        postTitle: currentPost.title,
-        userId,
-        comment
-      };
-
-      setComments((prevComments) => [...prevComments, newComment]);
-      setShowCommentForm(false);
-    }
   };
 
   const handleDelete = async () => {
@@ -142,7 +77,7 @@ const SinglePost: React.FC = () => {
       <>
         <small className='text-xs'>
           Created At:{' '}
-          {new Date(currentPost?.createdAt ?? new Date()).toLocaleString()}
+          {currentPost?.createdAt ? new Date(currentPost.createdAt).toLocaleString().replace(/\//g, '.') : ""}
         </small>
         {isAdmin && (
           <>
@@ -162,7 +97,7 @@ const SinglePost: React.FC = () => {
         )}
         <small className='text-xs text-right'>
           Updated At:{' '}
-          {new Date(currentPost?.updatedAt ?? new Date()).toLocaleString()}
+          {currentPost?.updatedAt ? new Date(currentPost.updatedAt).toLocaleString().replace(/\//g, '.') : ""}
         </small>
       </>
     );
@@ -240,26 +175,26 @@ const SinglePost: React.FC = () => {
         </div>
       </article>
 
-      <div className='w-full p-4 rounded-lg my-14'>
+      <div className='w-full py-4 rounded-lg my-14'>
         <h3 className='font-poppins font-bold mb-4'>Comments:</h3>
-        {comments.length > 0 &&
-          comments.map((comment) => (
+        {comments?.length > 0 &&
+          comments.map((comment, index: number) => (
             <CommentComponent
-              key={comment.id}
+              key={index}
               comment={comment}
-              submitNestedReplyForm={submitNestedReplyForm}
-              selectedCommentId={comment.id}
+              // submitNestedReplyForm={submitNestedReplyForm}
+              selectedCommentId={comment?._id}
               showReplyForm={showReplyForm}
-              submitReplyForm={submitReplyForm}
+              submitReplyForm={(reply) => submitReply(comment?._id as string, reply)}
               toggleReplyForm={toggleReplyForm}
             />
           ))}
         {showCommentForm &&
-          <CommentForm onSubmit={submitCommentForm} type={'comment'} closeForm={toggleCommentForm}/>
+          <CommentForm onSubmit={submitComment} type={'comment'} closeForm={toggleCommentForm}/>
         }
         {(!showCommentForm && !!authenticatedUser) && <div
-          className='flex flex-col items-center justify-center my-2 w-full'>
-          {comments.length < 1 &&
+          className='flex flex-col items-center justify-center mt-6 w-full'>
+          {comments?.length < 1 &&
             <h4 className='mb-4'>No comments yet.</h4>}
           <button
             onClick={toggleCommentForm}

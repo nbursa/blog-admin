@@ -59,3 +59,35 @@ const routes: RouteConfig[] = [
 ];
 
 export default routes;
+//
+// import { RouteConfig } from '../types';
+// import { lazy } from 'react';
+//
+// const Home = lazy(() => import('../pages/Home'));
+// const Login = lazy(() => import('../pages/Login'));
+// // ... other imports
+//
+// const baseRoutes: RouteConfig[] = [
+//   { path: '/', component: Home, label: 'Blogs', hidden: false, protected: false },
+//   { path: '/login', component: Login, label: 'Login', hidden: false, protected: false },
+//   // ... other routes
+// ];
+//
+// // Move auth logic out of the base routes config.
+// export const getRoutes = (): RouteConfig[] => {
+//   const isAuthenticated = !!localStorage.getItem('blog_access_token');
+//   const isAdmin = localStorage.getItem('blog_user') &&
+//     JSON.parse(localStorage.getItem('blog_user') as string).isAdmin;
+//
+//   return baseRoutes.map(route => {
+//     if (route.path === '/login' || route.path === '/register') {
+//       return { ...route, hidden: isAuthenticated };
+//     }
+//
+//     if (route.path === '/create') {
+//       return { ...route, hidden: !isAuthenticated || !isAdmin };
+//     }
+//
+//     return route;
+//   });
+// };

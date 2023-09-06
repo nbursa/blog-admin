@@ -1,28 +1,21 @@
 import React, { useState } from 'react';
 import {
-  CommentComponentProps,
+  CommentProps, Reply,
 } from '../types';
 import CommentForm from './CommentForm';
 import useAuth from '../hooks/useAuth';
-// import { useSelector } from 'react-redux';
-// import { RootState } from '../store/store';
 
-const CommentComponent: React.FC<CommentComponentProps> = ({
+const CommentComponent: React.FC<CommentProps> = ({
                                            comment,
                                            selectedCommentId,
                                            toggleReplyForm,
                                            submitReplyForm,
                                          }) => {
-  const userString = localStorage.getItem('blog_user');
-  const user = userString ? JSON.parse(userString) : null;
   const {isAuthenticated} = useAuth();
 
-  const postTitle = comment.postTitle;
-
-  const isSelected = selectedCommentId === comment.id;
+  const commentId = comment._id as string;
+  const isSelected = selectedCommentId === commentId;
   const [showReplyForm, setShowReplyForm] = useState(false);
-
-  console.log('user: ', user);
 
   const toggleThisReplyForm = () => {
     console.log('toggle this reply', isSelected)
@@ -32,23 +25,24 @@ const CommentComponent: React.FC<CommentComponentProps> = ({
     }
   };
 
+  const isTouchDevice = () => {
+    return 'ontouchstart' in window || navigator.maxTouchPoints;
+  };
+
   return (
-    <div key={comment.id} className='p-4 border border-gray-light mb-4 rounded-lg'>
-      <div className='grid grid-cols-2 mb-0'>
-        <div className='text-sm'>
-          {user.name || user.email}
+    <div key={comment?._id} className='pt-2 border-t border-gray-light mb-2 group'>
+      <div className='flex items-center justify-start mb-2'>
+        <div className='text-xs'>
+          {comment.userName}
         </div>
-        <div className='text-xs text-right'>
-          {comment.createdAt.toLocaleString()}
+        <div className='text-[10px] ml-2'>
+          {comment?.createdAt ? new Date(comment?.createdAt).toLocaleString().replace(/\//g, '.') : ""}
         </div>
       </div>
-      <div className='text-sm mb-4'>
-        {postTitle}
+      <div className='text-sm'>
+        <div>{comment?.comment}</div>
       </div>
-      <div className='text-base mb-4'>
-        <div>{comment.comment}</div>
-      </div>
-      {(!showReplyForm && isAuthenticated) && <div className='flex justify-end'>
+      {(!showReplyForm && isAuthenticated) && <div className={`flex justify-end ${isTouchDevice() ? '' : 'invisible group-hover:visible'}`}>
         <button
           onClick={toggleThisReplyForm}
           className='border border-gray-light rounded-lg py-0 px-3 text-sm'
@@ -56,22 +50,22 @@ const CommentComponent: React.FC<CommentComponentProps> = ({
           Reply
         </button>
       </div>}
-      {comment.replies &&
+      {comment?.replies?.length > 0 &&
         <>
-          <div className='text-sm mb-2 ml-4'>Replies:</div>
-          {comment.replies.map((reply) => (
-            <div key={reply.id}
-                 className='p-2 ml-4 border-t border-gray-light my-2 bg-gray-lightest'>
-              <div className='grid grid-cols-2 mb-4'>
-                <div className='text-sm'>
-                  {comment.userId}
+          <div className='text-[10px] mb-1 ml-4'>Replies:</div>
+          {comment?.replies.map((reply: Reply, index: number) => (
+            <div key={index}
+                 className='p-2 ml-4 border-t border-gray-light mt-2 bg-gray-lightest'>
+              <div className='flex items-center justify-start mb-2'>
+                <div className='text-xs'>
+                  {reply?.userName}
                 </div>
-                <div className='text-sm text-right'>
-                  {comment.createdAt.toLocaleString()}
+                <div className='text-[10px] ml-2'>
+                  {reply?.createdAt ? new Date(reply.createdAt).toLocaleString() : ""}
                 </div>
               </div>
-              <div className='text-base'>
-                {reply.reply}
+              <div className='text-sm'>
+                {reply?.reply}
               </div>
             </div>
           ))}
@@ -80,8 +74,8 @@ const CommentComponent: React.FC<CommentComponentProps> = ({
       {showReplyForm && isSelected && (
         <div className='p-4'>
           <CommentForm
-            onSubmit={(reply) => {
-              submitReplyForm(reply);
+            onSubmit={(commentId: string, reply: string) => {
+              submitReplyForm(commentId, reply);
               toggleThisReplyForm();
             }}
             closeForm={toggleThisReplyForm}
