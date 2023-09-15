@@ -28,7 +28,7 @@ export const commentSlice = createSlice({
       state.error = action.payload;
       state.loading = false;
     },
-    resetLoading: (state) => { // New action to reset loading state
+    resetLoading: (state) => {
       state.loading = false;
     },
   },
