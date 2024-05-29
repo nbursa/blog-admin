@@ -1,3 +1,3 @@
-<a href="https://blog.nenadbursac.com/" target="_blank">Demo</a>
+[Demo](https://blog.nenadbursac.com/)
 
 ### wip client for blog app.
